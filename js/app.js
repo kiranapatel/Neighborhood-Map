@@ -100,7 +100,7 @@ var ViewModel = function() {
             });
             self.markerArray.push(marker);
             bounds.extend(marker.position);
-        }
+        
             marker.addListener('click', function() {
                 map.setCenter(marker.getPosition());
                 populateInfoWindow(this, largeInfowindow);
