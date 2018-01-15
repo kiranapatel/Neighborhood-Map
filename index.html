@@ -15,46 +15,45 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Acme|Lobster" rel="stylesheet">
 
-
 </head>
 
 <body>
-    <div id="map"></div> 
-    <div id="sidebar" >
-        <input type="search" placeholder="Filter the Lists" data-bind="textInput: filter"/>
+    <div id="map"></div>
+    <div id="sidebar">
+        <input type="search" placeholder="Filter the Lists" data-bind="textInput: filter" />
         <div id="wrapper" onclick="toggleSidebar()">
             <div class="main-item menu">
-                  <span class="line line01"></span>
-                  <span class="line line02"></span>
-                  <span class="line line03"></span>
+                <span class="line line01"></span>
+                <span class="line line02"></span>
+                <span class="line line03"></span>
             </div>
         </div>
-        <div class="list">          
+        <div class="list">
             <ul data-bind="foreach: visiblePlaces">
                 <li data-bind="text: $data.title, click: $parent.selectList, $parent.highlightedItem"></li>
             </ul>
         </div>
     </div>
-      
+
     <!--goole map api-->
     <script type='text/javascript' src='js/knockout/build/output/knockout-latest.js'></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGiUC70Bpg4r4vdNSrZKaMyBFgjJ4X6bk&v=3">
-   </script>
+    </script>
     <!-- Bootstrap core JavaScript -->
     <script src="js/jquery/jquery.min.js"></script>
     <script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
-   <script src="js/app.js"></script>
+    <script src="js/app.js"></script>
 
-   <script>
-       function toggleSidebar() {
-           document.getElementById('sidebar').classList.toggle('active');
-           document.getElementById('wrapper').classList.toggle('close-button');
-       }
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('wrapper').classList.toggle('close-button');
+        }
 
-      $("#wrapper").click( function() {
-        $(".menu").toggleClass("close");
-      }); 
-  </script>
+        $("#wrapper").click(function() {
+            $(".menu").toggleClass("close");
+        });
+    </script>
 
 </body>
 
