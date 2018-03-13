@@ -5,55 +5,61 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>My Neighborhood Map</title>
+    <title>Nashville, TN Map</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Acme|Lobster" rel="stylesheet">
-
+  
 </head>
 
 <body>
-    <div id="map"></div>
-    <div id="sidebar">
-        <input type="search" placeholder="Filter the Lists" data-bind="textInput: filter" />
-        <div id="wrapper" onclick="toggleSidebar()">
-            <div class="main-item menu">
-                <span class="line line01"></span>
-                <span class="line line02"></span>
-                <span class="line line03"></span>
+    <div class="container">
+        <div class="row">
+            <div class="col sidebar sidebar-catCol">
+                <button class="arrow-btn" data-bind="click: showList">
+                   <img class="button-img" data-bind="attr: {src: arrow}">
+                </button>
+            
+                <div class="button-div" data-bind="foreach: $root.filter_option">
+                    <input class='chk-btn' type="checkbox" data-bind="value: Name(), attr: {id: id()}, checked: $root.filters">
+                    <label  data-bind="attr: {'for': id()}">
+                        <img class="button-img" data-bind="attr: {src: image()}">
+                    </label>
+                </div>
             </div>
         </div>
-        <div class="list">
-            <ul data-bind="foreach: visiblePlaces">
-                <li data-bind="text: $data.title, click: $parent.selectList, $parent.highlightedItem"></li>
-            </ul>
+    
+        <div class="row">
+            <div class="col sidebar sidebar-listCol" data-bind="fadeVisible: showLists">
+                    <div class="filter-div">
+                        <input id="filter-box" type="search" placeholder="Filter the Lists" data-bind="textInput: filter"/>
+                    </div>
+                    <!-- col -->
+                    <div class="list-section">
+                        <ul data-bind="foreach: $root.visiblePlaces">
+                            <li data-bind="text: $data.title, event: { mouseover: $parent.toggleOn, mouseout: $parent.toggleOut}, click: $parent.markerInfo"></li>
+                        </ul>
+                    </div>
+            </div>
         </div>
     </div>
 
+    <div id="map"></div> 
+          
     <!--goole map api-->
-    <script async type='text/javascript' src='js/knockout/build/output/knockout-latest.js'></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGiUC70Bpg4r4vdNSrZKaMyBFgjJ4X6bk&v=3">
-    </script>
+    <script async defer 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGiUC70Bpg4r4vdNSrZKaMyBFgjJ4X6bk&libraries=places&callback=initMap&v=3">
+   </script>
+
+    <script type='text/javascript' src='js/knockout/build/output/knockout-latest.js'></script>
+
     <!-- Bootstrap core JavaScript -->
-    <script async src="js/jquery/jquery.min.js"></script>
-    <script async src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script async src="js/app.min.js"></script>
-
-    <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('wrapper').classList.toggle('close-button');
-        }
-
-        $("#wrapper").click(function() {
-            $(".menu").toggleClass("close");
-        });
-    </script>
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/fourSquare.js"></script>
+    <script src="js/app_1.js"></script>
 
 </body>
 
