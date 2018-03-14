@@ -387,11 +387,6 @@ var ViewModel = function() {
         scaledSize: new google.maps.Size(30, 50),
     };
 
-    var hoverList = {
-        url: 'img/highlightedMarker.svg',
-        scaledSize: new google.maps.Size(40, 66),
-    };
-
     var highlightedIcon = {
         url: 'img/highlightedMarker.svg',
         scaledSize: new google.maps.Size(30, 50),
@@ -442,7 +437,7 @@ var ViewModel = function() {
 
                 infowindow.setContent(self.htmlContent + self.htmlContentFoursquare);
             }).fail(function() {
-                console.log( "Unable get foursquare data for this location");
+                alert("Unable get foursquare data for this location");
               });
 
             infowindow.open(map, marker);
@@ -462,7 +457,6 @@ var ViewModel = function() {
         var search = self.filter().toLowerCase();
         return ko.utils.arrayFilter(self.markerArray(), function(item) {
                 if (self.filters().indexOf(item.category) > -1) {
-                    console.log(self.filters());
                     if (item.title.toLowerCase().indexOf(search) >= 0) {
                         item.setMap(map);
                         return true;
