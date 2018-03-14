@@ -380,7 +380,9 @@ var ViewModel = function() {
     }();
 
     var bounds = new google.maps.LatLngBounds();
-    var infowindow = new google.maps.InfoWindow();
+    var infowindow = new google.maps.InfoWindow({
+        maxWidth: 120
+    });
 
     var markerIcon = {
         url: 'img/marker.svg',
