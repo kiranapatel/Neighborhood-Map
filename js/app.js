@@ -214,6 +214,11 @@ var marker;
 var infowindow;
 var markers = [];
 
+// alerts the user if Google Maps fails to load
+function mapError() {
+    alert('Opps.. Google Map fail to load. Please check your internet connection or try again later.');
+}
+
 function initMap() {
 
     //Constructor creates a new map - only center and are required.
@@ -354,14 +359,13 @@ var ViewModel = function() {
     self.highlightMarker = ko.observable(false);
     self.filter = ko.observable('');
     self.filter_option = ko.observableArray();
-    self.filters = ko.observableArray();
+    self.filters = ko.observableArray(["Donut", "Vegan", "Pizza", "Taco", "Brunch", "Coffee", "Buffet", "Icecreame"]);
 
     function filterType(id, name, image) {
-        var self = this;
-        self.id = ko.observable(id);
-        self.Name = ko.observable(name);
-        self.image = ko.observable(image);
-        self.Selected = ko.observable(false);
+        this.id = ko.observable(id);
+        this.Name = ko.observable(name);
+        this.image = ko.observable(image);
+        this.Selected = ko.observable(false);
     }
 
     self.init = function() {
@@ -383,31 +387,43 @@ var ViewModel = function() {
         scaledSize: new google.maps.Size(30, 50),
     };
 
+    var hoverList = {
+        url: 'img/highlightedMarker.svg',
+        scaledSize: new google.maps.Size(40, 66),
+    };
+
+    var highlightedIcon = {
+        url: 'img/highlightedMarker.svg',
+        scaledSize: new google.maps.Size(30, 50),
+    };
+
     var createMarker = function(place) {
-        marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
             map: map,
-            title: Model[i].title,
-            position: Model[i].location,
-            category: Model[i].category,
+            title: place.title,
+            position: place.location,
+            category: place.category,
             icon: markerIcon
         });
+
         map.fitBounds(bounds);
         self.markerArray().push(marker);
         marker.addListener('click', function() {
             map.setCenter(this.getPosition());
             self.populateInfoWindow(this, infowindow);
             infowindow.open(map, this);
+            self.toggleMarker(marker);
         });
         bounds.extend(marker.position);
     };
 
-    for (var i = 0; i < Model.length; i++) {
-        createMarker(Model[i]);
-    }
+    Model.forEach(function(location){
+        createMarker(location);
+    });
 
     self.populateInfoWindow = function(marker, infowindow) {
         if (infowindow.marker != marker) {
-            infowindow.setContent('');
+            infowindow.setContent('Loading...');
             infowindow.marker = marker;
 
             var url = 'https://api.foursquare.com/v2/venues/search?near=nashville,tn&client_id=SYWGR4EL3JFALWCCKHS1KKUTXT3F4OAIINPODW2RXUXREF1Z&client_secret=5UNHNCDD0PL052SRJ4RLHY4MSXURU1FVDZBTBSUN3EJ5IOAI&v=20180311';
@@ -425,13 +441,19 @@ var ViewModel = function() {
                     '</div> </div>';
 
                 infowindow.setContent(self.htmlContent + self.htmlContentFoursquare);
-            });
+            }).fail(function() {
+                console.log( "Unable get foursquare data for this location");
+              });
 
             infowindow.open(map, marker);
 
             infowindow.addListener('closeclick', function() {
                 map.setCenter(new google.maps.LatLng(36.162664, -86.781602));
+                setTimeout(function () {
+                    marker.setAnimation(null);
+                }, 100);
                 infowindow.marker = null;
+                marker.setIcon(markerIcon);
             });
         }
     };
@@ -439,39 +461,46 @@ var ViewModel = function() {
     self.visiblePlaces = ko.computed(function() {
         var search = self.filter().toLowerCase();
         return ko.utils.arrayFilter(self.markerArray(), function(item) {
-            if (self.filters().indexOf(item.category) > -1) {
-                if (item.title.toLowerCase().indexOf(search) >= 0) {
-                    item.setMap(map);
-                    return true;
+                if (self.filters().indexOf(item.category) > -1) {
+                    console.log(self.filters());
+                    if (item.title.toLowerCase().indexOf(search) >= 0) {
+                        item.setMap(map);
+                        return true;
+                    } else {
+                        item.setMap(null);
+                        infowindow.close(map, item);
+                        return false;
+                    }
                 } else {
                     item.setMap(null);
                     infowindow.close(map, item);
                     return false;
                 }
-            } else {
-                item.setMap(null);
-                infowindow.close(map, item);
-                return false;
-            }
         });
     }, self);
 
-    self.toggleOn = function(place) {
+    self.toggleMarker = function(place) {
         place.setAnimation(google.maps.Animation.BOUNCE);
-    };
-
-    self.toggleOut = function(place) {
-        place.setAnimation();
+        place.setIcon(highlightedIcon);
+        setTimeout(function () {
+            place.setAnimation(null);
+            place.setIcon(markerIcon);
+        }, 3000);
     };
 
     self.markerInfo = function(place) {
         self.populateInfoWindow(place, infowindow);
         map.setCenter(place.getPosition());
+        self.toggleMarker(place);
     };
 
-    self.markerHighlighted = function() {
-        self.highlightMarker(true);
-    };
+    // self.toggleOn = function(place) {
+    //     place.setIcon(hoverList);
+    // };
+
+    // self.toggleOut = function(place) {
+    //     place.setIcon(markerIcon);
+    // };
 
     self.showList = function() {
         self.showLists(!self.showLists());
