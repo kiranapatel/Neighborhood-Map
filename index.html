@@ -9,10 +9,10 @@
     <title>Nashville, TN Map</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet"/>
-    <link href="css/style.min.css" rel="stylesheet"/>
-      
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  
 </head>
 
 <body>
@@ -40,7 +40,8 @@
                     <!-- col -->
                     <div class="list-section">
                         <ul data-bind="foreach: $root.visiblePlaces">
-                            <li data-bind="text: $data.title, event: { mouseover: $parent.toggleOn, mouseout: $parent.toggleOut}, click: $parent.markerInfo"></li>
+                            <li data-bind="text: $data.title, click: $parent.markerInfo"></li>
+                            <!-- event: { mouseover: $parent.toggleOn, mouseout: $parent.toggleOut}, -->
                         </ul>
                     </div>
             </div>
@@ -49,16 +50,18 @@
 
     <div id="map"></div> 
           
-    <!--goole map api-->
-    <script async defer 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGiUC70Bpg4r4vdNSrZKaMyBFgjJ4X6bk&libraries=places&callback=initMap&v=3">
-   </script>
 
-    <script type='text/javascript' src='js/knockout/build/output/knockout-latest.js'></script>
+    <script src='js/knockout/build/output/knockout-latest.js'></script>
 
     <!-- Bootstrap core JavaScript -->
     <script src="js/jquery/jquery.min.js"></script>
-    <script src="js/app.min.js"></script>
+
+    <script src="js/app_1.js"></script>
+
+    <!--google map api-->
+    <script async defer 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGiUC70Bpg4r4vdNSrZKaMyBFgjJ4X6bk&libraries=places&callback=initMap&v=3" onerror="mapError()">
+   </script>
 
 </body>
 
