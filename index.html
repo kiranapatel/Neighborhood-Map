@@ -18,7 +18,7 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col sidebar sidebar-catCol">
+            <div class="col col-sm sidebar sidebar-catCol">
                 <button class="arrow-btn" data-bind="click: showList">
                    <img data-bind="attr: {src: arrow}">
                 </button>
@@ -33,9 +33,9 @@
         </div>
     
         <div class="row">
-            <div class="col sidebar sidebar-listCol" data-bind="fadeVisible: showLists">
+            <div class="col col-sm sidebar sidebar-listCol" data-bind="fadeVisible: showLists">
                     <div class="filter-div">
-                        <input id="filter-box" type="search" placeholder="Filter the Lists" data-bind="textInput: filter"/>
+                        <input class="filter-box" type="search" placeholder="Filter the Lists" data-bind="textInput: filter"/>
                     </div>
                     <!-- col -->
                     <div class="list-section">
@@ -56,7 +56,7 @@
     <!-- Bootstrap core JavaScript -->
     <script src="js/jquery/jquery.min.js"></script>
 
-    <script src="js/app.js"></script>
+    <script src="js/app_1.js"></script>
 
     <!--google map api-->
     <script async defer 
